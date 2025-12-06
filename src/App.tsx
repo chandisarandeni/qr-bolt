@@ -19,6 +19,7 @@ function App() {
   const [settings, setSettings] = useState<QRSettings>(defaultSettings)
   const [qrDataUrl, setQrDataUrl] = useState('')
   const [busy, setBusy] = useState(false)
+  const [exporting, setExporting] = useState(false)
   const [error, setError] = useState('')
   const [copyState, setCopyState] = useState<CopyState>('idle')
 
@@ -74,13 +75,51 @@ function App() {
     setSettings((previous) => ({ ...previous, [key]: value }))
   }
 
-  const handleDownload = () => {
+  const buildFramedDataUrl = async (source: string) =>
+    await new Promise<string>((resolve, reject) => {
+      const image = new Image()
+      image.onload = () => {
+        const padding = 24
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width + padding * 2
+        canvas.height = image.height + padding * 2
+
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+          reject(new Error('Canvas is unavailable'))
+          return
+        }
+
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(image, padding, padding)
+
+        resolve(canvas.toDataURL('image/png'))
+      }
+
+      image.onerror = reject
+      image.src = source
+    })
+
+  const handleDownload = async () => {
     if (!qrDataUrl) return
 
-    const link = document.createElement('a')
-    link.href = qrDataUrl
-    link.download = 'qr-bolt.png'
-    link.click()
+    setExporting(true)
+    try {
+      const framedUrl = await buildFramedDataUrl(qrDataUrl)
+      const link = document.createElement('a')
+      link.href = framedUrl
+      link.download = 'qr-bolt.png'
+      link.click()
+    } catch (downloadError) {
+      console.error('Download failed', downloadError)
+      const link = document.createElement('a')
+      link.href = qrDataUrl
+      link.download = 'qr-bolt.png'
+      link.click()
+    } finally {
+      setExporting(false)
+    }
   }
 
   const handleCopy = async () => {
@@ -100,6 +139,8 @@ function App() {
       window.setTimeout(() => setCopyState('idle'), 1600)
     }
   }
+
+  const processing = busy || exporting
 
   return (
     <div className="page">
@@ -122,7 +163,7 @@ function App() {
         <PreviewPanel
           dataUrl={qrDataUrl}
           error={error}
-          busy={busy}
+          busy={processing}
           settings={settings}
           onCopy={handleCopy}
           onDownload={handleDownload}

@@ -27,7 +27,7 @@ function ControlsPanel({ settings, onChange }: ControlsPanelProps) {
           <span id="controls-heading">Content</span>
           <span className="muted">{settings.text.length}/240</span>
         </div>
-        <p className="muted help-text">Paste your full link—no need to strip the https:// part.</p>
+        <p className="muted help-text">Paste the full link—https:// will be trimmed automatically.</p>
         <textarea
           className="input input--area"
           maxLength={240}

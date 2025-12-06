@@ -321,6 +321,11 @@
   border-color: #1f1f1f;
 }
 
+.help-text {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 640px) {
   .panel {
     padding: 1rem;

@@ -27,11 +27,12 @@ function ControlsPanel({ settings, onChange }: ControlsPanelProps) {
           <span id="controls-heading">Content</span>
           <span className="muted">{settings.text.length}/240</span>
         </div>
+        <p className="muted help-text">Paste your full link—no need to strip the https:// part.</p>
         <textarea
           className="input input--area"
           maxLength={240}
           value={settings.text}
-          placeholder="Paste a URL, note, or Wi-Fi password."
+          placeholder="Paste a full URL, note, or Wi-Fi password."
           onChange={(event) => onChange('text', event.target.value)}
         />
       </div>

@@ -15,8 +15,6 @@ const defaultSettings: QRSettings = {
   inverted: false,
 }
 
-const sanitizeText = (input: string) => input.replace(/^\s*https?:\/\//i, '')
-
 function App() {
   const [settings, setSettings] = useState<QRSettings>(defaultSettings)
   const [qrDataUrl, setQrDataUrl] = useState('')
@@ -74,8 +72,7 @@ function App() {
 
   const updateSetting = <K extends keyof QRSettings>(key: K, value: QRSettings[K]) => {
     setCopyState('idle')
-    const nextValue = key === 'text' ? (sanitizeText(String(value)) as QRSettings[K]) : value
-    setSettings((previous) => ({ ...previous, [key]: nextValue }))
+    setSettings((previous) => ({ ...previous, [key]: value }))
   }
 
   const buildFramedDataUrl = async (source: string) =>

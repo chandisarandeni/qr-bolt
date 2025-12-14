@@ -1,32 +1,34 @@
 # QR Bolt
 
-Single-page QR code generator with a black-and-white aesthetic. Everything renders client-side: paste a full URL (no need to strip `https://`), tune size, quiet zone, error correction, invert colors, and export a framed PNG that matches the on-screen preview.
+A slick, single-page QR code generator focused on crisp black-and-white output. Everything runs client-side: paste a link or note, tune the specs, and export a framed PNG that matches the live preview.
 
-## Features
-- Live preview of your QR code with adjustable size and quiet zone
-- Error correction levels L/M/Q/H and optional color inversion for dark surfaces
-- PNG download with a clean white frame that mirrors the preview
-- Copy the PNG data URL to the clipboard for reuse
-- Responsive layout and monochrome styling built for focus and clarity
+## Highlights
+- Local-only generation with the `qrcode` library; nothing leaves the browser.
+- Live preview with adjustable size (180-520px), quiet zone (0-10px), and error correction (L/M/Q/H).
+- Optional invert toggle for dark backgrounds and a framed PNG export with extra white padding.
+- Copy the PNG data URL to the clipboard for reuse in docs, design tools, or CMS entries.
+- Responsive monochrome UI that keeps attention on the QR itself.
 
-## Quick start
-1. Install dependencies: `npm install`
-2. Run the dev server: `npm run dev` (open the shown localhost URL)
-3. Build for production: `npm run build`
-4. Preview the build: `npm run preview`
+## How to use
+1. Paste your content into **Content**. `https://` is trimmed automatically; up to 240 characters are supported.
+2. Adjust **Size** and **Quiet zone** with the sliders to fit print or screen needs.
+3. Pick an **Error correction** level (L/M/Q/H) based on how much resizing or wear the code will see.
+4. Toggle **Invert black/white** if the code will sit on a dark surface or UI.
+5. Choose **Download PNG** for a framed export, or **Copy data URL** to embed the image elsewhere.
 
-## Using the app
-- Paste your content or full link into the Content box (keep the `https://` prefix if present).
-- Adjust Size, Quiet zone, and Error correction to fit your use case.
-- Toggle “Invert black/white” if the QR will sit on a dark background.
-- Download PNG to get the framed QR exactly as shown in the preview, or Copy data URL to reuse it elsewhere.
+## Development
+- Install: `npm install`
+- Dev server: `npm run dev`
+- Lint: `npm run lint`
+- Build: `npm run build`
+- Preview production build: `npm run preview`
 
-## Project structure
-- `src/App.tsx`: Main page and generation logic using the `qrcode` library
-- `src/components/ControlsPanel.tsx`: Inputs for content and QR settings
-- `src/components/PreviewPanel.tsx`: Live preview, status, and export actions
-- `src/App.css`, `src/index.css`: Monochrome theme and layout styles
+## Project layout
+- `src/App.tsx`: Page shell, QR generation, download/copy handlers.
+- `src/components/ControlsPanel.tsx`: Inputs for content, sizing, quiet zone, error correction, and inversion.
+- `src/components/PreviewPanel.tsx`: Live preview, status display, and export actions.
+- `src/App.css`, `src/index.css`: Monochrome theme, layout, and typography.
 
-## Tech stack
+## Stack
 - React + TypeScript + Vite
-- `qrcode` for generating QR code PNGs
+- `qrcode` for PNG generation
